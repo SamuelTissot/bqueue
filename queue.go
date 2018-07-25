@@ -6,17 +6,17 @@ package bqueue
 
 // Queue that process jobs reveived
 type Queue struct {
-	maxJobs     int
+	maxWorker   int
 	JobRequests chan chan Job
 	JobReceived chan Job
 }
 
 // New Queue object
-// @param maxJobs int is the maximum job at a single time that can be handled
-func New(maxJobs int) *Queue {
-	JobRequests := make(chan chan Job, maxJobs)
+// @param MaxWorkerint is the maximum job at a single time that can be handled
+func New(maxWorker int) *Queue {
+	JobRequests := make(chan chan Job, maxWorker)
 	return &Queue{
-		maxJobs:     maxJobs,
+		maxWorker:   maxWorker,
 		JobRequests: JobRequests,
 		JobReceived: make(chan Job, 128),
 	}
@@ -24,7 +24,7 @@ func New(maxJobs int) *Queue {
 
 // Start the queue
 func (q *Queue) Start() {
-	for i := 0; i < q.maxJobs; i++ {
+	for i := 0; i < q.maxWorker; i++ {
 		id := i + 1
 		worker := newWorker(id, q.JobRequests)
 		worker.start()
