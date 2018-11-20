@@ -1,5 +1,14 @@
 BQUEUE
-----
+====
+
+##### Build Status
+
+| branch   | status |
+| -------- |:------:|
+| master   | [![CircleCI](https://circleci.com/gh/SamuelTissot/bqueue/tree/master.svg?style=svg)](https://circleci.com/gh/SamuelTissot/bqueue/tree/master) |
+
+
+
 **A buffered async queue**
 ###### Based on Marcio Castilho [article](http://marcio.io/2015/07/handling-1-million-requests-per-minute-with-golang/) “Handling 1 Million Requests per Minute with Go”
 

@@ -67,3 +67,7 @@ fabric.properties
 
 .vscode
 
+.idea/bqueue.iml
+.idea/encodings.xml
+.idea/misc.xml
+.idea/modules.xml
