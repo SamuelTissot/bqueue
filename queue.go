@@ -4,6 +4,10 @@
 // interface `Job`
 package bqueue
 
+import "sync"
+
+var WG sync.WaitGroup
+
 // Queue that process jobs reveived
 type Queue struct {
 	maxWorker   int
@@ -35,6 +39,7 @@ func (q *Queue) Start() {
 
 // CollectJob Adds a job to the Queue
 func (q *Queue) CollectJob(job Job) {
+	WG.Add(1)
 	q.JobReceived <- job
 }
 

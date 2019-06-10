@@ -52,4 +52,6 @@ func (w *worker) do(j Job) {
 	if err != nil {
 		fmt.Println(err)
 	}
+
+	WG.Done()
 }
