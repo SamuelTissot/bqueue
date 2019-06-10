@@ -3,8 +3,11 @@ package bqueue
 import (
 	"bytes"
 	"errors"
+	"fmt"
 	"log"
 	"os"
+	"strconv"
+	"strings"
 	"testing"
 	"time"
 
@@ -35,6 +38,30 @@ func Test_Collect_and_process_job(t *testing.T) {
 
 	assert.Contains(t, output, "test job: Boo Foo", "The two words should be the same.")
 
+}
+
+func Test_WG(t *testing.T) {
+	q := New(1)
+	q.Start()
+
+	//var output string
+	var output string
+	output += captureStout(func() {
+		for i := 0; i <= 200; i++ {
+			j := aJob{strconv.Itoa(i)}
+			q.CollectJob(j)
+
+		}
+		WG.Wait()
+	})
+
+	// look for all instances of "test job: N"
+	// not very efficient but minimizes false positive
+	for i := 0; i <= 200; i++ {
+		if !strings.Contains(output, fmt.Sprintf("test job: %d", i)) {
+			t.FailNow()
+		}
+	}
 }
 
 func captureStout(f func()) string {
