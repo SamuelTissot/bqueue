@@ -24,3 +24,31 @@ By using the awesomeness of channels.
 >Channels are the pipes that all goroutines to share data. You can send values into channels from one goroutine and receive those values in another goroutine.
 
 With channels we are able to share the data between goroutines enabling it to be processed concurrently, to make the best use of multiple CPU cores.
+
+
+Usage
+---
+
+```go
+	// Create the Queue with 2 static worker
+	q, err := bqueue.New(bqueue.Static(), bqueue.Workers(2))
+	if err != nil {
+		// handle error
+		panic(err)
+	}
+
+	// add jobs
+    // any implementation of the bqueue.Job interface
+	q.Queue(...)
+
+	// will wait until all jobs are done to STOP or context is cancelled
+	if err := q.Stop(context.TODO()); err != nil {
+		// handle error
+		panic(err)
+	}
+```
+
+Example
+---
+
+- [Basic Example](./examples/basic)
