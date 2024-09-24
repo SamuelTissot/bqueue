@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"math/rand"
-	"sync/atomic"
 	"time"
 
 	"github.com/SamuelTissot/bqueue"
@@ -41,7 +40,7 @@ func main() {
 	// blocking until all jobs are added
 	addJobsAsync(q)
 
-	// will wait until all jobs are done to STOP
+	// will wait until all jobs are done to STOP or the context is cancelled.
 	if err := q.Stop(context.TODO()); err != nil {
 		// handle error
 		panic(err)
@@ -52,11 +51,9 @@ func main() {
 // it will add 50 jobs
 func addJobsAsync(q *bqueue.Queue) {
 	ticker := time.NewTicker(10 * time.Millisecond)
-	aID := atomic.Uint32{}
+	id := 1
 
 	for range ticker.C {
-		id := int(aID.Add(1))
-
 		if id > 50 {
 			return
 		}
@@ -64,6 +61,8 @@ func addJobsAsync(q *bqueue.Queue) {
 		q.Queue(&AJob{
 			id: id,
 		})
+
+		id++
 	}
 }
 
